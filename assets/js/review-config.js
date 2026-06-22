@@ -1,10 +1,9 @@
 window.REVIEW_CONFIG = {
   // CANLI SUPABASE BAĞLANTISI
-  // Supabase Project Settings > API bölümünden alınır.
-  // Project URL örnek: https://xxxxxxxxxxxx.supabase.co
-  // Anon public key örnek: eyJhbGciOiJIUzI1NiIs...
-  supabaseUrl: "BURAYA_SUPABASE_PROJECT_URL",
-  supabaseAnonKey: "BURAYA_SUPABASE_ANON_PUBLIC_KEY",
+  // Proje URL'i ve anon public key işlendi.
+  // Service role / secret key kesinlikle buraya eklenmemelidir.
+  supabaseUrl: "https://lyhoszxvcxcbybqeexhu.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx5aG9zenh2Y3hjYnlicWVleGh1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNDgwODksImV4cCI6MjA5NzcyNDA4OX0.harcx45QRvXH8E-P-JahUNh9CwXw6m6rYstLq3AR_tw",
 
   // Tablo adı SQL dosyası ile aynı kalmalı.
   table: "beauty_reviews",

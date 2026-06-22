@@ -31,3 +31,7 @@ Bu paket, bilgiler henüz eksikken hazırlanmış müşteri ön izlemesi ve tam 
 - Gerçek alan adı sitemap.xml ve robots.txt dosyasına yazılmalı.
 - KVKK ve hizmet koşulları bir uzman tarafından kontrol edilmeli.
 - Kesin sonuç, garanti, tıbbi iddia gibi ifadeler kullanılmamalı.
+
+
+## V10 Notu
+Supabase bağlantı bilgileri `assets/js/review-config.js` içine işlendi. SQL kurulumu ve admin User ID ekleme adımı hâlâ Supabase panelinden yapılmalıdır.
