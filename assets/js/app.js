@@ -33,9 +33,10 @@
     ["phone", "whatsapp", "address", "mapUrl", "instagram", "name", "descriptor", "slogan", "city", "district"].forEach(key => {
       if (isPlaceholder(rawBrand[key])) b[key] = REAL_BRAND[key];
     });
-    document.title = data.seo?.title || b.name || document.title;
+    const isHomePage = !document.body.dataset.service && !!document.querySelector(".hero");
+    if (isHomePage && data.seo?.title) document.title = data.seo.title;
     const meta = $('meta[name="description"]');
-    if (meta && data.seo?.description) meta.setAttribute("content", data.seo.description);
+    if (isHomePage && meta && data.seo?.description) meta.setAttribute("content", data.seo.description);
 
     $$('[data-brand="name"]').forEach(el => el.textContent = b.name || "Merve Yıldırım Beauty");
     $$('[data-brand="short"]').forEach(el => el.textContent = b.shortName || "MY Beauty");
@@ -61,12 +62,14 @@
     });
   }
 
-  function renderServices() {
+  
+function renderServices() {
     const services = data.services || [];
     const wrap = $("#servicesGrid");
     if (!wrap) return;
     wrap.innerHTML = services.map((s, i) => `
       <article class="service-card reveal" style="--i:${i}">
+        ${s.image ? `<div class="service-thumb"><img src="${s.image}" alt="${s.title} uygulamasını temsil eden görsel" loading="lazy" decoding="async"></div>` : ''}
         <div class="service-icon">${s.icon || "✦"}</div>
         <p class="eyebrow">${s.eyebrow || "Premium hizmet"}</p>
         <h3>${s.title}</h3>
@@ -75,6 +78,7 @@
       </article>
     `).join("");
   }
+
 
   function renderCampaigns() {
     const wrap = $("#campaignGrid");
@@ -114,9 +118,9 @@
     setText("#serviceSummary", s.summary);
     setText("#serviceDetail", s.detail);
     setText("#breadcrumbService", s.title);
-    if (s.title && data.brand?.name) document.title = `${s.title} | ${data.brand.name}`;
+    // Static HTML already contains SEO-optimized title/description for each service page.
+    // Do not overwrite them after load; this keeps crawler-visible metadata consistent.
     const meta = $('meta[name="description"]');
-    if (meta && s.summary) meta.setAttribute("content", `${s.title} - ${s.summary}`);
     $$('[data-service-name]').forEach(el => el.textContent = s.title);
     $$('[data-whatsapp-service]').forEach(el => {
       const b = { ...REAL_BRAND, ...(data.brand || {}) };

@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
-Sitemap: https://alan-adi-buraya-gelecek.com/sitemap.xml
+Disallow: /admin-yorumlar.html
+
+Sitemap: https://merveyildirimbeauty.com.tr/sitemap.xml
