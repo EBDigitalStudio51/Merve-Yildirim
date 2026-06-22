@@ -53,32 +53,23 @@
       <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> / Admin</div>
       <p class="eyebrow">Admin paneli</p>
       <h1>Danışan yorumlarını yönetin</h1>
-      <p class="hero-copy">Onay bekleyen yorumları yayına alın, reddedin veya silin. Canlı kullanımda yorumlar Supabase veritabanına düşer; admin onayı verilmeden hiçbir yorum sitede yayınlanmaz.</p>
+      <p class="hero-copy">Yorumlar yalnızca admin onayından sonra sitede yayınlanır. Admin girişini Supabase e-posta ve şifresiyle yapar.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
       <div class="content-card" id="adminGate">
-        <h2>Giriş</h2>
-        <p><strong id="adminModeInfo">Mod kontrol ediliyor...</strong></p>
-        <div class="admin-login-grid">
-          <form id="localAdminForm" class="admin-login-card">
-            <h3>Demo / Yerel Mod</h3>
-            <p>Sadece bilgisayarda test içindir. Canlı yayında gerçek yorum yönetimi Supabase e-posta/şifre girişi ile yapılmalıdır.</p>
-            <input class="input" type="password" name="pin" placeholder="Admin PIN" autocomplete="current-password">
-            <button class="btn gold" type="submit">Panele Gir</button>
-            <small id="localAdminStatus"></small>
-          </form>
-          <form id="supabaseLoginForm" class="admin-login-card">
-            <h3>Supabase Canlı Mod</h3>
-            <p>Canlı sitede işletme sahibi e-posta ve şifre ile girer; onay bekleyen yorumları yayına alır veya reddeder.</p>
-            <input class="input" type="email" name="email" placeholder="Admin e-posta">
-            <input class="input" type="password" name="password" placeholder="Şifre">
-            <button class="btn gold" type="submit">Supabase ile Giriş</button>
-            <small id="supabaseLoginStatus"></small>
-          </form>
-        </div>
+        <h2>Yönetici Girişi</h2>
+        <p><strong id="adminModeInfo">Supabase bağlantısı kontrol ediliyor...</strong></p>
+        <form id="supabaseLoginForm" class="admin-login-card live-login-card">
+          <h3>Admin Paneli</h3>
+          <p>Bu panel yalnızca Supabase üzerinde yetkilendirilmiş admin hesabıyla açılır. PIN / demo giriş kaldırılmıştır.</p>
+          <input class="input" type="email" name="email" placeholder="Admin e-posta" autocomplete="username" required>
+          <input class="input" type="password" name="password" placeholder="Şifre" autocomplete="current-password" required>
+          <button class="btn gold" type="submit">Admin Paneline Giriş Yap</button>
+          <small id="supabaseLoginStatus"></small>
+        </form>
       </div>
 
       <div id="adminPanel" hidden>

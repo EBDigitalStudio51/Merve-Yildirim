@@ -1,13 +1,14 @@
 window.REVIEW_CONFIG = {
-  // FINAL: Admin onayı zorunludur. Ziyaretçi yorumu doğrudan yayına alınmaz.
-  // Canlı kullanım için Supabase Project URL ve anon public key alanlarını doldurun.
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  // CANLI SUPABASE BAĞLANTISI
+  // Supabase Project Settings > API bölümünden alınır.
+  // Project URL örnek: https://xxxxxxxxxxxx.supabase.co
+  // Anon public key örnek: eyJhbGciOiJIUzI1NiIs...
+  supabaseUrl: "BURAYA_SUPABASE_PROJECT_URL",
+  supabaseAnonKey: "BURAYA_SUPABASE_ANON_PUBLIC_KEY",
 
-  // Sadece yerel test içindir. Canlı yayında gerçek güvenlik Supabase Auth + RLS ile sağlanır.
-  localAdminPin: "2026",
-
+  // Tablo adı SQL dosyası ile aynı kalmalı.
   table: "beauty_reviews",
-  maxPublishedReviews: 9,
-  approvalRequired: true
+
+  // Ana sayfada en fazla kaç onaylı yorum gösterilsin?
+  maxPublishedReviews: 9
 };

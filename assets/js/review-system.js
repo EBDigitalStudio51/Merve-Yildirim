@@ -2,129 +2,42 @@
   const config = window.REVIEW_CONFIG || {};
   const data = window.SITE_DATA || {};
   const table = config.table || "beauty_reviews";
-  const localKey = "my_beauty_reviews_v8_pending_approval";
   const $ = (sel, root=document) => root.querySelector(sel);
   const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 
   function esc(v){
     return String(v || "").replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
   }
-  function uid(){
-    return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
-  }
+
   function configured(){
-    return !!(config.supabaseUrl && config.supabaseAnonKey && window.supabase);
+    const urlOk = !!(config.supabaseUrl && !String(config.supabaseUrl).includes("BURAYA_SUPABASE"));
+    const keyOk = !!(config.supabaseAnonKey && !String(config.supabaseAnonKey).includes("BURAYA_SUPABASE"));
+    return !!(urlOk && keyOk && window.supabase);
   }
+
   function client(){
     if(!configured()) return null;
-    if(!window.__beautySupabase) {
+    if(!window.__beautySupabase){
       window.__beautySupabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
     }
     return window.__beautySupabase;
   }
+
   function serviceOptions(){
     return (data.services || []).map(s => s.title);
   }
-  function readLocal(){
-    try{return JSON.parse(localStorage.getItem(localKey) || "[]");}catch(e){return []}
-  }
-  function writeLocal(items){
-    localStorage.setItem(localKey, JSON.stringify(items));
-  }
+
   function normalize(row){
     return {
       id: row.id,
       name: row.name || "Danışan",
-      phone: row.phone || "",
       service: row.service || "Hizmet deneyimi",
       rating: Number(row.rating || 5),
       review: row.review || row.comment || "",
       status: row.status || "pending",
-      allow_publish: row.allow_publish === true,
-      source: row.source || "website",
+      allow_publish: row.allow_publish !== false,
       created_at: row.created_at || new Date().toISOString()
     };
-  }
-
-  async function getApproved(){
-    if(configured()){
-      const supa = client();
-      const {data: rows, error} = await supa.from(table)
-        .select("id,name,service,rating,review,status,allow_publish,created_at")
-        .eq("status", "approved")
-        .eq("allow_publish", true)
-        .order("created_at", {ascending:false})
-        .limit(config.maxPublishedReviews || 9);
-      if(error){
-        console.warn("Onaylı yorumlar yüklenemedi:", error);
-        return [];
-      }
-      return (rows || []).map(normalize).filter(x => x.status === "approved" && x.allow_publish === true);
-    }
-    return readLocal()
-      .map(normalize)
-      .filter(x => x.status === "approved" && x.allow_publish === true)
-      .sort((a,b)=> new Date(b.created_at)-new Date(a.created_at))
-      .slice(0, config.maxPublishedReviews || 9);
-  }
-
-  async function getAll(){
-    if(configured()){
-      const supa = client();
-      const {data: rows, error} = await supa.from(table)
-        .select("id,name,phone,service,rating,review,status,allow_publish,source,created_at")
-        .order("created_at", {ascending:false});
-      if(error) throw error;
-      return (rows || []).map(normalize);
-    }
-    return readLocal().map(normalize).sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
-  }
-
-  async function submitReview(payload){
-    const row = {
-      name: payload.name,
-      phone: payload.phone,
-      service: payload.service,
-      rating: Number(payload.rating || 5),
-      review: payload.review,
-      allow_publish: !!payload.allow_publish,
-      status: "pending",
-      source: "website",
-      created_at: new Date().toISOString()
-    };
-
-    // Güvenlik: ziyaretçi tarafından gönderilen her yorum kesin olarak pending oluşturulur.
-    if(configured()){
-      const {error} = await client().from(table).insert(row);
-      if(error) throw error;
-      return;
-    }
-    row.id = uid();
-    const items = readLocal();
-    items.unshift(row);
-    writeLocal(items);
-  }
-
-  async function updateReview(id, fields){
-    const safeFields = {...fields};
-    if(safeFields.status === "approved") safeFields.allow_publish = true;
-
-    if(configured()){
-      const {error} = await client().from(table).update(safeFields).eq("id", id);
-      if(error) throw error;
-      return;
-    }
-    const items = readLocal().map(x => x.id === id ? {...x, ...safeFields} : x);
-    writeLocal(items);
-  }
-
-  async function deleteReview(id){
-    if(configured()){
-      const {error} = await client().from(table).delete().eq("id", id);
-      if(error) throw error;
-      return;
-    }
-    writeLocal(readLocal().filter(x => x.id !== id));
   }
 
   function stars(n){
@@ -141,20 +54,83 @@
     </article>`;
   }
 
+  function renderEmptyPublic(wrap){
+    wrap.innerHTML = `<article class="quote-card review-card">
+      <div class="stars" aria-hidden="true">★★★★★</div>
+      <p>Yorumlar danışan izni ve işletme onayı sonrası burada yayınlanır.</p>
+      <strong>Merve Yıldırım Beauty</strong>
+      <small>Kontrollü yorum sistemi</small>
+    </article>`;
+  }
+
+  async function getApproved(){
+    if(!configured()) return [];
+    const supa = client();
+    const {data: rows, error} = await supa.from(table)
+      .select("id,name,service,rating,review,status,allow_publish,created_at")
+      .eq("status", "approved")
+      .eq("allow_publish", true)
+      .order("created_at", {ascending:false})
+      .limit(config.maxPublishedReviews || 9);
+    if(error){
+      console.warn("Review load error", error);
+      return [];
+    }
+    return (rows || []).map(normalize);
+  }
+
+  async function getAll(){
+    if(!configured()) throw new Error("Supabase bağlantısı yapılandırılmadı.");
+    const supa = client();
+    const {data: rows, error} = await supa.from(table)
+      .select("id,name,phone,service,rating,review,status,allow_publish,created_at")
+      .order("created_at", {ascending:false});
+    if(error) throw error;
+    return rows || [];
+  }
+
+  async function submitReview(payload){
+    if(!configured()) throw new Error("Supabase bağlantısı yapılandırılmadı.");
+    const row = {
+      name: payload.name,
+      phone: payload.phone,
+      service: payload.service,
+      rating: Number(payload.rating || 5),
+      review: payload.review,
+      allow_publish: !!payload.allow_publish,
+      status: "pending",
+      source: "website"
+    };
+    const {error} = await client().from(table).insert(row);
+    if(error) throw error;
+  }
+
+  async function updateReview(id, fields){
+    if(!configured()) throw new Error("Supabase bağlantısı yapılandırılmadı.");
+    const {error} = await client().from(table).update(fields).eq("id", id);
+    if(error) throw error;
+  }
+
+  async function deleteReview(id){
+    if(!configured()) throw new Error("Supabase bağlantısı yapılandırılmadı.");
+    const {error} = await client().from(table).delete().eq("id", id);
+    if(error) throw error;
+  }
+
   async function renderPublicReviews(){
     const wrap = $("[data-review-list]") || $("#testimonialGrid");
     if(!wrap) return;
-    const rows = await getApproved();
-    if(!rows.length){
-      wrap.innerHTML = `<article class="quote-card review-card">
-        <div class="stars" aria-label="Yorum sistemi hazır">★★★★★</div>
-        <p>Onaylanmış danışan yorumları burada yayınlanacaktır. Gönderilen yorumlar admin onayından geçmeden görünmez.</p>
-        <strong>Merve Yıldırım Beauty</strong>
-        <small>Admin onaylı yorum sistemi</small>
-      </article>`;
-      return;
+    try{
+      const rows = await getApproved();
+      if(rows.length){
+        wrap.innerHTML = rows.map(renderReviewCard).join("");
+      }else{
+        renderEmptyPublic(wrap);
+      }
+    }catch(err){
+      console.warn(err);
+      renderEmptyPublic(wrap);
     }
-    wrap.innerHTML = rows.map(renderReviewCard).join("");
   }
 
   function fillReviewServiceSelect(){
@@ -169,6 +145,10 @@
     if(!form) return;
     fillReviewServiceSelect();
     const status = $("#reviewStatus");
+    if(!configured() && status){
+      status.textContent = "Yorum gönderimi için Supabase bağlantısı aktif edilmelidir.";
+    }
+
     form.addEventListener("submit", async e => {
       e.preventDefault();
       const fd = new FormData(form);
@@ -188,17 +168,17 @@
         await submitReview(payload);
         form.reset();
         fillReviewServiceSelect();
-        if(status) status.textContent = "Yorumunuz alındı. Admin onaylamadan sitede yayınlanmayacaktır.";
+        if(status) status.textContent = "Yorumunuz alındı. Admin onayından sonra sitede yayınlanacaktır.";
       }catch(err){
         console.error(err);
-        if(status) status.textContent = "Yorum gönderilemedi. Bağlantı ayarlarını kontrol edin veya daha sonra tekrar deneyin.";
+        if(status) status.textContent = "Yorum gönderilemedi. Supabase bağlantısı veya internet ayarları kontrol edilmeli.";
       }
     });
   }
 
   function statusBadge(status){
     const map = {pending:"Onay Bekliyor", approved:"Yayında", rejected:"Reddedildi"};
-    return `<span class="admin-badge ${esc(status)}">${map[status] || esc(status)}</span>`;
+    return `<span class="admin-badge ${esc(status)}">${map[status] || status}</span>`;
   }
 
   function renderAdminRow(r){
@@ -211,7 +191,7 @@
       <small>${esc(r.phone || "Telefon yok")} · ${new Date(r.created_at).toLocaleString("tr-TR")}</small>
       <div class="admin-actions">
         <button class="btn gold" data-action="approved">Onayla ve Yayınla</button>
-        <button class="btn light" data-action="pending">Beklemeye Al</button>
+        <button class="btn light" data-action="pending">Beklet</button>
         <button class="btn light" data-action="rejected">Reddet</button>
         <button class="btn" data-action="delete">Sil</button>
       </div>
@@ -224,30 +204,32 @@
     if(!list) return;
     try{
       const rows = await getAll();
-      const ordered = rows.sort((a,b) => {
-        const rank = {pending:0, approved:1, rejected:2};
-        return (rank[a.status] ?? 9) - (rank[b.status] ?? 9) || new Date(b.created_at)-new Date(a.created_at);
-      });
       const counts = rows.reduce((acc, r) => (acc[r.status || "pending"] = (acc[r.status || "pending"] || 0)+1, acc), {});
       if(stats) stats.innerHTML = `Toplam ${rows.length} · Onay bekleyen ${counts.pending || 0} · Yayında ${counts.approved || 0} · Reddedilen ${counts.rejected || 0}`;
-      list.innerHTML = ordered.length ? ordered.map(renderAdminRow).join("") : `<div class="content-card"><p>Henüz yorum gelmedi. Yeni yorumlar önce burada onay bekler.</p></div>`;
+      list.innerHTML = rows.length ? rows.map(renderAdminRow).join("") : `<div class="content-card"><p>Henüz yorum gelmedi.</p></div>`;
     }catch(err){
       console.error(err);
-      list.innerHTML = `<div class="content-card"><p>Yorumlar yüklenemedi. Supabase bağlantısını, admin girişini veya RLS yetkisini kontrol edin.</p></div>`;
+      list.innerHTML = `<div class="content-card"><p>Yorumlar yüklenemedi. Admin yetkisi, Supabase SQL kurulumu veya bağlantı bilgileri kontrol edilmeli.</p></div>`;
     }
   }
 
   async function initAdmin(){
     const gate = $("#adminGate");
     const panel = $("#adminPanel");
-    const localForm = $("#localAdminForm");
     const loginForm = $("#supabaseLoginForm");
+    const modeInfo = $("#adminModeInfo");
+    const logoutBtn = $("#adminLogout");
+    const list = $("#adminReviewList");
+
     if(!gate || !panel) return;
 
-    const modeInfo = $("#adminModeInfo");
-    if(modeInfo) modeInfo.textContent = configured()
-      ? "Supabase canlı mod — yorumlar veritabanından yönetilir."
-      : "Yerel test modu — canlı site için Supabase bağlanmalıdır. Test PIN: 2026";
+    if(!configured()){
+      if(modeInfo) modeInfo.textContent = "Supabase bağlantısı eksik. review-config.js içine Project URL ve anon key girilmeli.";
+      if(loginForm) loginForm.querySelector("button")?.setAttribute("disabled", "disabled");
+      return;
+    }
+
+    if(modeInfo) modeInfo.textContent = "Supabase canlı mod aktif. Admin e-posta ve şifre ile giriş yapılır.";
 
     async function openPanel(){
       gate.hidden = true;
@@ -255,42 +237,35 @@
       await renderAdmin();
     }
 
-    if(!configured() && sessionStorage.getItem("beautyLocalAdmin") === "1") await openPanel();
-    if(configured()){
-      const {data: sessionData} = await client().auth.getSession();
-      if(sessionData?.session) await openPanel();
-    }
-
-    localForm?.addEventListener("submit", async e => {
-      e.preventDefault();
-      const pin = new FormData(localForm).get("pin");
-      if(String(pin) === String(config.localAdminPin || "2026")){
-        sessionStorage.setItem("beautyLocalAdmin", "1");
-        await openPanel();
-      } else {
-        const s = $("#localAdminStatus"); if(s) s.textContent = "PIN hatalı.";
-      }
-    });
+    const {data: sessionData} = await client().auth.getSession();
+    if(sessionData?.session) await openPanel();
 
     loginForm?.addEventListener("submit", async e => {
       e.preventDefault();
-      if(!configured()){
-        const s = $("#supabaseLoginStatus"); if(s) s.textContent = "Canlı mod için review-config.js içine Supabase bilgileri girilmeli.";
+      const fd = new FormData(loginForm);
+      const email = String(fd.get("email") || "").trim();
+      const password = String(fd.get("password") || "").trim();
+      const status = $("#supabaseLoginStatus");
+      if(!email || !password){
+        if(status) status.textContent = "Admin e-posta ve şifre giriniz.";
         return;
       }
-      const fd = new FormData(loginForm);
-      const {error} = await client().auth.signInWithPassword({email: fd.get("email"), password: fd.get("password")});
-      if(error){ const s=$("#supabaseLoginStatus"); if(s) s.textContent = error.message; return; }
+
+      const {error} = await client().auth.signInWithPassword({email, password});
+      if(error){
+        if(status) status.textContent = "Giriş başarısız: " + error.message;
+        return;
+      }
+      if(status) status.textContent = "Giriş başarılı.";
       await openPanel();
     });
 
-    $("#adminLogout")?.addEventListener("click", async () => {
-      sessionStorage.removeItem("beautyLocalAdmin");
-      if(configured()) await client().auth.signOut();
+    logoutBtn?.addEventListener("click", async () => {
+      await client().auth.signOut();
       location.reload();
     });
 
-    $("#adminReviewList")?.addEventListener("click", async e => {
+    list?.addEventListener("click", async e => {
       const btn = e.target.closest("button[data-action]");
       if(!btn) return;
       const card = e.target.closest("[data-id]");
@@ -300,15 +275,13 @@
       try{
         if(action === "delete"){
           if(confirm("Bu yorumu silmek istiyor musunuz?")) await deleteReview(id);
-        }else if(action === "approved"){
-          if(confirm("Bu yorumu yayına almak istiyor musunuz?")) await updateReview(id, {status: "approved", allow_publish: true});
         }else{
           await updateReview(id, {status: action});
         }
         await renderAdmin();
         await renderPublicReviews();
       }catch(err){
-        alert("İşlem yapılamadı. Yetki veya bağlantı ayarlarını kontrol edin.");
+        alert("İşlem yapılamadı. Admin yetkisini veya Supabase ayarlarını kontrol edin.");
         console.error(err);
       }
     });
