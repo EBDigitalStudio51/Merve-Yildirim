@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Yorum Yönetimi | Merve Yıldırım Beauty</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body id="top">
+<header class="topbar">
+  <nav class="container nav">
+    <a class="logo" href="index.html" aria-label="Ana sayfa">
+      <span class="logo-mark">MY</span>
+      <span><span data-brand="name">Merve Yıldırım Beauty</span><small>Yorum Yönetimi</small></span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#yorumlar">Sitedeki Yorumlar</a>
+      <a href="yorum-birak.html">Yorum Formu</a>
+      <a href="index.html">Ana Sayfa</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> / Admin</div>
+      <p class="eyebrow">Admin paneli</p>
+      <h1>Danışan yorumlarını yönetin</h1>
+      <p class="hero-copy">Onay bekleyen yorumları yayına alın, reddedin veya silin. Supabase bağlanana kadar panel demo/yerel modda çalışır.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="content-card" id="adminGate">
+        <h2>Giriş</h2>
+        <p><strong id="adminModeInfo">Mod kontrol ediliyor...</strong></p>
+        <div class="admin-login-grid">
+          <form id="localAdminForm" class="admin-login-card">
+            <h3>Demo / Yerel Mod</h3>
+            <p>Supabase bilgileri girilmemişse test için kullanılır. Gerçek yayında bu mod güvenlik sağlamaz.</p>
+            <input class="input" type="password" name="pin" placeholder="Admin PIN" autocomplete="current-password">
+            <button class="btn gold" type="submit">Panele Gir</button>
+            <small id="localAdminStatus"></small>
+          </form>
+          <form id="supabaseLoginForm" class="admin-login-card">
+            <h3>Supabase Canlı Mod</h3>
+            <p>Gerçek veritabanı bağlandığında işletme sahibi e-posta ve şifre ile giriş yapar.</p>
+            <input class="input" type="email" name="email" placeholder="Admin e-posta">
+            <input class="input" type="password" name="password" placeholder="Şifre">
+            <button class="btn gold" type="submit">Supabase ile Giriş</button>
+            <small id="supabaseLoginStatus"></small>
+          </form>
+        </div>
+      </div>
+
+      <div id="adminPanel" hidden>
+        <div class="admin-toolbar content-card">
+          <div>
+            <h2>Yorumlar</h2>
+            <p id="adminReviewStats">Yorumlar yükleniyor...</p>
+          </div>
+          <div class="admin-toolbar-actions">
+            <button class="btn light" id="seedDemoReview">Demo yorum ekle</button>
+            <button class="btn" id="adminLogout">Çıkış</button>
+          </div>
+        </div>
+        <div class="admin-review-list" id="adminReviewList"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong data-brand="name">Merve Yıldırım Beauty</strong><br><span>Admin yorum yönetimi</span></div>
+    <div class="footer-links"><a href="gizlilik-kvkk.html">Gizlilik & KVKK</a><a href="index.html">Ana Sayfa</a></div>
+  </div>
+</footer>
+<script src="assets/js/site-data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/review-config.js"></script>
+<script src="assets/js/review-system.js"></script>
+</body>
+</html>

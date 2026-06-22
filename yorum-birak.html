@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Merve Yıldırım Beauty danışan yorum ve deneyim paylaşım formu.">
+  <title>Yorum Bırak | Merve Yıldırım Beauty</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body id="top">
+<header class="topbar">
+  <nav class="container nav">
+    <a class="logo" href="index.html" aria-label="Ana sayfa">
+      <span class="logo-mark">MY</span>
+      <span><span data-brand="name">Merve Yıldırım Beauty</span><small data-brand="descriptor">Güzellik Salonu & Bakım Merkezi</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle">Menü</button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#hizmetler">Hizmetler</a>
+      <a href="index.html#hakkimizda">Hakkımızda</a>
+      <a href="index.html#yorumlar">Yorumlar</a>
+      <a href="randevu.html">Randevu</a>
+      <a href="index.html#iletisim">İletişim</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> / Deneyimini Paylaş</div>
+      <p class="eyebrow">Danışan deneyimi</p>
+      <h1>Deneyiminizi zarifçe paylaşın</h1>
+      <p class="hero-copy">Yorumunuz işletme tarafından incelendikten ve onaylandıktan sonra sitede yayınlanır. Yayın izni vermediğiniz yorumlar yalnızca iç değerlendirme amacıyla tutulur.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container detail-grid">
+      <div class="content-card reveal">
+        <h2>Yorum formu</h2>
+        <p>Hizmet sonrası memnuniyet, öneri veya deneyiminizi paylaşabilirsiniz. Sağlık, kesin sonuç veya garanti ifade eden yorumlar yayın öncesinde düzenlenebilir ya da yayınlanmayabilir.</p>
+        <form class="form-grid review-form" id="reviewForm">
+          <input class="input" name="name" placeholder="Ad Soyad" required>
+          <input class="input" name="phone" placeholder="Telefon — sitede yayınlanmaz">
+          <select class="input" name="service" id="reviewService" required></select>
+          <select class="input" name="rating" required>
+            <option value="5">5 yıldız — Çok memnun kaldım</option>
+            <option value="4">4 yıldız — Memnun kaldım</option>
+            <option value="3">3 yıldız — Orta</option>
+            <option value="2">2 yıldız — Geliştirilebilir</option>
+            <option value="1">1 yıldız — Memnun kalmadım</option>
+          </select>
+          <textarea class="input" name="review" placeholder="Deneyiminizi yazın" minlength="10" required></textarea>
+          <label class="consent-line"><input type="checkbox" name="allow_publish" required> Yorumumun adım, hizmet adı ve puanımla birlikte sitede yayınlanmasına izin veriyorum.</label>
+          <button class="btn gold" type="submit">Yorumu Gönder</button>
+        </form>
+        <p class="form-status" id="reviewStatus" role="status"></p>
+      </div>
+      <aside class="detail-panel reveal">
+        <p class="eyebrow">Kontrollü yayın</p>
+        <h2>Yorumlar doğrudan yayına alınmaz</h2>
+        <p>Her yorum önce admin paneline düşer. İşletme sahibi uygun gördüğü yorumları yayına alır, bekletebilir veya reddedebilir.</p>
+        <ul class="check-list">
+          <li>5 yıldız puanlama</li>
+          <li>Hizmet seçimi</li>
+          <li>Yayın izni onayı</li>
+          <li>Admin onay paneli</li>
+          <li>Supabase bağlantısına hazır yapı</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><strong data-brand="name">Merve Yıldırım Beauty</strong><br><span data-brand="slogan">Güzelliğinize değer katan profesyonel dokunuşlar</span></div>
+    <div class="footer-links"><a href="gizlilik-kvkk.html">Gizlilik & KVKK</a><a href="hizmet-kosullari.html">Hizmet Koşulları</a><a href="index.html">Ana Sayfa</a></div>
+  </div>
+</footer>
+<script src="assets/js/site-data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/review-config.js"></script>
+<script src="assets/js/review-system.js"></script>
+</body>
+</html>

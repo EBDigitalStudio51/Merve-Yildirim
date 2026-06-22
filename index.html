@@ -19,6 +19,7 @@
       <a href="#hizmetler">Hizmetler</a>
       <a href="#hakkimizda">Hakkımızda</a>
       <a href="#kampanyalar">Kampanyalar</a>
+      <a href="#yorumlar">Yorumlar</a>
       <a href="#randevu">Randevu</a>
       <a href="#iletisim">İletişim</a>
     </div>
@@ -106,13 +107,21 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="yorumlar">
     <div class="container">
       <div class="section-head reveal">
-        <h2>Danışan yorumları</h2>
-        <p>Yorumlar yalnızca müşteri onayı alındıktan sonra yayınlanacak şekilde kurgulandı.</p>
+        <h2>Danışan deneyimleri</h2>
+        <p>Yorumlar yalnızca danışan onayı ve işletme onayından sonra yayınlanacak şekilde kurgulandı.</p>
       </div>
-      <div class="testimonial-grid" id="testimonialGrid"></div>
+      <div class="testimonial-grid" id="testimonialGrid" data-review-list></div>
+      <div class="review-cta reveal">
+        <div>
+          <span class="eyebrow">Deneyim paylaşımı</span>
+          <h3>Hizmet sonrası yorum bırakma sistemi hazır</h3>
+          <p>Danışanlar deneyimini puanlayabilir; yorumlar admin panelinden onaylanmadan yayına alınmaz.</p>
+        </div>
+        <a class="btn gold" href="yorum-birak.html">Yorum Bırak</a>
+      </div>
     </div>
   </section>
 
@@ -156,5 +165,8 @@
 </footer>
 <script src="assets/js/site-data.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/review-config.js"></script>
+<script src="assets/js/review-system.js"></script>
 </body>
 </html>
