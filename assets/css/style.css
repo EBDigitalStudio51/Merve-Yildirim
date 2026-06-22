@@ -35,8 +35,8 @@ img{max-width:100%;display:block}
 }
 .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}
 .logo{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.04em}
-.logo-mark{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--wine),var(--rose) 62%,var(--gold));box-shadow:0 14px 36px rgba(184,111,124,.24);position:relative;overflow:hidden}
-.logo-mark:after{content:"";position:absolute;inset:6px;border:1px solid rgba(199,154,59,.58);border-radius:50%}
+.logo-mark{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.86);box-shadow:0 14px 36px rgba(184,111,124,.24);position:relative;overflow:hidden;border:1px solid rgba(199,154,59,.32);flex:0 0 54px}
+.logo-mark:after{content:"";position:absolute;inset:5px;border:1px solid rgba(199,154,59,.48);border-radius:50%;pointer-events:none}.logo-mark img{width:100%;height:100%;object-fit:contain;border-radius:50%;display:block}
 .logo small{display:block;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-top:2px}
 .nav-links{display:flex;align-items:center;gap:22px;color:#72545b;font-size:14px;font-weight:700}
 .nav-links a{position:relative}.nav-links a:after{content:"";position:absolute;left:0;right:100%;bottom:-7px;height:1px;background:var(--gold);transition:.3s}.nav-links a:hover:after{right:0}
@@ -50,8 +50,8 @@ h1{font-family:Georgia, 'Times New Roman', serif;font-size:clamp(43px,6.2vw,88px
 h1 span,.title-gradient{background:linear-gradient(90deg,var(--wine),var(--rose),var(--gold));-webkit-background-clip:text;color:transparent}
 .hero-copy{font-size:18px;color:#73565c;max-width:680px;margin:22px 0 26px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}.trust-row{display:flex;gap:10px;flex-wrap:wrap}.trust-row span{border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:999px;padding:9px 13px;color:#73565c;font-size:13px;font-weight:800}
 .hero-art{position:relative;min-height:640px}.portrait-card{position:absolute;inset:0 0 auto 10%;height:590px;border-radius:44% 44% 34px 34px;background:linear-gradient(160deg,#f7dce3,#fff9ef 46%,#d5ad56);box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(255,255,255,.7)}
-.portrait-card:before{content:"";position:absolute;inset:30px;border:1px solid rgba(184,111,124,.12);border-radius:44% 44% 26px 26px}.portrait-card:after{content:"BEAUTY\A CLINIC";white-space:pre;position:absolute;left:38px;bottom:34px;color:rgba(111,63,72,.14);font-family:Georgia,serif;font-size:64px;line-height:.85;font-weight:bold;letter-spacing:-.06em}
-.beauty-silhouette{position:absolute;right:34px;bottom:80px;width:260px;height:360px;border-radius:50% 50% 36% 36%;background:radial-gradient(circle at 55% 18%,#fff 0 42px,transparent 43px),linear-gradient(180deg,rgba(111,63,72,.78),rgba(217,154,170,.44));filter:drop-shadow(0 28px 46px rgba(111,63,72,.22));opacity:.88}
+.portrait-card:before{}.portrait-card:after{display:none}
+.beauty-silhouette{display:none}
 .float-card{position:absolute;left:0;bottom:64px;background:rgba(255,255,255,.72);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.82);border-radius:22px;padding:18px;box-shadow:0 20px 50px rgba(111,63,72,.12);width:260px}.float-card strong{display:block;color:var(--deep);font-size:21px}.float-card p{margin:4px 0 0;color:var(--muted);font-size:13px}
 .section{padding:76px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:30px}.section-head h2{font-family:Georgia,serif;font-size:clamp(32px,4vw,58px);line-height:1;margin:0;color:var(--deep);letter-spacing:-.04em}.section-head p{max-width:520px;color:#73565c;margin:0}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat-card{padding:24px;border-radius:24px;background:rgba(255,255,255,.64);border:1px solid rgba(184,111,124,.10);box-shadow:0 18px 42px rgba(111,63,72,.06)}.stat-card strong{display:block;font-size:30px;color:var(--wine)}.stat-card span{color:var(--muted);font-size:13px;font-weight:700}
@@ -139,3 +139,5 @@ h1 span,.title-gradient{background:linear-gradient(90deg,var(--wine),var(--rose)
 }
 .content-card .input::placeholder,.admin-login-card .input::placeholder{color:#8b6f73}
 .content-card select.input option,.admin-login-card select.input option{color:var(--ink)}
+
+.hero-logo-image{position:absolute;inset:9%;width:82%;height:82%;object-fit:contain;display:block;filter:drop-shadow(0 24px 40px rgba(111,63,72,.12));z-index:2}

@@ -1,23 +1,23 @@
 window.SITE_DATA = {
   brand: {
-    name: "Merve Yıldırım Beauty",
-    shortName: "MY Beauty",
-    descriptor: "Güzellik Salonu & Bakım Merkezi",
-    slogan: "Güzelliğinize değer katan profesyonel dokunuşlar",
+    name: "Merve Yıldırım Beauty & Sağlıklı Yaşam",
+    shortName: "Merve Yıldırım",
+    descriptor: "Beauty & Sağlıklı Yaşam",
+    slogan: "Beauty & Sağlıklı Yaşam",
     city: "Mersin",
     district: "Mezitli",
-    founded: "Kuruluş yılı eklenecek",
+    founded: "Mersin Mezitli",
     ownerName: "Merve Yıldırım",
     instagram: "https://www.instagram.com/merveyildirim_guzelliksalonu/",
-    phone: "Telefon bilgisi eklenecek",
-    whatsapp: "",
-    address: "Mersin / Mezitli — net adres bilgisi eklenecek",
-    mapUrl: "",
+    phone: "0544 240 29 71",
+    whatsapp: "905442402971",
+    address: "Merkez Mah. 52005 Sok. Aros 3 Sitesi A Blok Kat: 3 No: 3 Mezitli / Mersin (Mezitli Gündoğdu üstü)",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Merkez%20Mah.%2052005%20Sok.%20Aros%203%20Sitesi%20A%20Blok%20Kat%3A%203%20No%3A%203%20Mezitli%20/%20Mersin%20%28Mezitli%20G%C3%BCndo%C4%9Fdu%20%C3%BCst%C3%BC%29",
     email: "E-posta bilgisi eklenecek"
   },
   seo: {
-    title: "Merve Yıldırım Beauty | Mersin Güzellik Salonu & Bakım Merkezi",
-    description: "Merve Yıldırım Beauty; lazer epilasyon, cilt bakımı, bölgesel incelme, kalıcı makyaj ve profesyonel bakım uygulamaları için premium güzellik merkezi web sitesi ön izlemesi."
+    title: "Merve Yıldırım Beauty & Sağlıklı Yaşam | Mezitli Mersin",
+    description: "Merve Yıldırım Beauty & Sağlıklı Yaşam, Mezitli Mersin’de güzellik, bakım ve sağlıklı yaşam hizmetleri sunan randevu odaklı premium merkezdir."
   },
   services: [
     {

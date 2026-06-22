@@ -1,5 +1,19 @@
 (function () {
   const data = window.SITE_DATA || {};
+  const REAL_BRAND = {
+    name: "Merve Yıldırım Beauty & Sağlıklı Yaşam",
+    shortName: "Merve Yıldırım",
+    descriptor: "Beauty & Sağlıklı Yaşam",
+    slogan: "Beauty & Sağlıklı Yaşam",
+    city: "Mersin",
+    district: "Mezitli",
+    instagram: "https://www.instagram.com/merveyildirim_guzelliksalonu/",
+    phone: "0544 240 29 71",
+    whatsapp: "905442402971",
+    address: "Merkez Mah. 52005 Sok. Aros 3 Sitesi A Blok Kat: 3 No: 3 Mezitli / Mersin (Mezitli Gündoğdu üstü)",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Merkez%20Mah.%2052005%20Sok.%20Aros%203%20Sitesi%20A%20Blok%20Kat%3A%203%20No%3A%203%20Mezitli%20/%20Mersin%20%28Mezitli%20G%C3%BCndo%C4%9Fdu%20%C3%BCst%C3%BC%29"
+  };
+  const isPlaceholder = (value) => !value || /eklenecek|placeholder|net adres/i.test(String(value));
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
@@ -14,7 +28,11 @@
   }
 
   function initBrand() {
-    const b = data.brand || {};
+    const rawBrand = data.brand || {};
+    const b = { ...REAL_BRAND, ...rawBrand };
+    ["phone", "whatsapp", "address", "mapUrl", "instagram", "name", "descriptor", "slogan", "city", "district"].forEach(key => {
+      if (isPlaceholder(rawBrand[key])) b[key] = REAL_BRAND[key];
+    });
     document.title = data.seo?.title || b.name || document.title;
     const meta = $('meta[name="description"]');
     if (meta && data.seo?.description) meta.setAttribute("content", data.seo.description);
@@ -25,9 +43,12 @@
     $$('[data-brand="slogan"]').forEach(el => el.textContent = b.slogan || "Premium bakım deneyimi");
     $$('[data-brand="city"]').forEach(el => el.textContent = b.city || "Mersin");
     $$('[data-brand="district"]').forEach(el => el.textContent = b.district || "Mezitli");
-    $$('[data-brand="phone"]').forEach(el => el.textContent = b.phone || "Telefon bilgisi eklenecek");
-    $$('[data-brand="address"]').forEach(el => el.textContent = b.address || "Adres bilgisi eklenecek");
+    $$('[data-brand="phone"]').forEach(el => el.textContent = b.phone || REAL_BRAND.phone);
+    $$('[data-brand="address"]').forEach(el => el.textContent = b.address || REAL_BRAND.address);
     $$('[data-brand="instagram"]').forEach(el => el.href = b.instagram || "#");
+    $$('[data-map-link]').forEach(el => {
+      el.href = b.mapUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address || REAL_BRAND.address)}`;
+    });
 
     const wa = moneySafePhone(b.whatsapp || b.phone);
     $$('[data-whatsapp]').forEach(el => {
@@ -93,9 +114,12 @@
     setText("#serviceSummary", s.summary);
     setText("#serviceDetail", s.detail);
     setText("#breadcrumbService", s.title);
+    if (s.title && data.brand?.name) document.title = `${s.title} | ${data.brand.name}`;
+    const meta = $('meta[name="description"]');
+    if (meta && s.summary) meta.setAttribute("content", `${s.title} - ${s.summary}`);
     $$('[data-service-name]').forEach(el => el.textContent = s.title);
     $$('[data-whatsapp-service]').forEach(el => {
-      const b = data.brand || {};
+      const b = { ...REAL_BRAND, ...(data.brand || {}) };
       const wa = moneySafePhone(b.whatsapp || b.phone);
       const msg = encodeURIComponent(`${b.name || "Merve Yıldırım Beauty"} ${s.title} hizmeti hakkında bilgi almak istiyorum.`);
       el.href = wa ? `https://wa.me/${wa}?text=${msg}` : "../randevu.html";
@@ -112,7 +136,7 @@
     form.addEventListener("submit", e => {
       e.preventDefault();
       const fd = new FormData(form);
-      const b = data.brand || {};
+      const b = { ...REAL_BRAND, ...(data.brand || {}) };
       const wa = moneySafePhone(b.whatsapp || b.phone);
       const msg = [
         `Merhaba, ${b.name || "Merve Yıldırım Beauty"} için randevu talebi oluşturmak istiyorum.`,
@@ -123,7 +147,7 @@
         `Not: ${fd.get("note") || "-"}`
       ].join("\n");
       if (!wa) {
-        alert("WhatsApp numarası site-data.js dosyasına eklenince form doğrudan WhatsApp'a yönlendirecek.");
+        alert("WhatsApp numarası hazırlanamadı. Lütfen 0544 240 29 71 üzerinden iletişime geçin.");
         return;
       }
       window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`, "_blank");
