@@ -87,8 +87,6 @@ window.SITE_DATA = {
     { value: "WhatsApp", label: "Hızlı randevu altyapısı" }
   ],
   testimonials: [
-    { name: "Premium bakım deneyimi", text: "Merve Yıldırım Beauty’de bakım süreci zarif sunum, hijyen ve kişiye özel ilgi ile desteklenir." },
-    { name: "Mezitli / Mersin", text: "Lazer, tırnak, kalıcı makyaj ve G5 odaklı hizmetler için ulaşımı kolay, profesyonel bir merkez." },
-    { name: "Randevu kolaylığı", text: "Telefon ve WhatsApp üzerinden hızlı bilgi alma ve randevu oluşturma sistemi hazırdır." }
+    { name: "Premium bakım deneyimi", text: "Yorumlar danışan izni ve işletme onayından sonra bu alanda yayınlanır." }
   ]
 };

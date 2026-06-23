@@ -63,6 +63,7 @@
   }
 
   
+
 function renderServices() {
     const services = data.services || [];
     const wrap = $("#servicesGrid");
@@ -78,6 +79,7 @@ function renderServices() {
       </article>
     `).join("");
   }
+
 
 
   function renderCampaigns() {

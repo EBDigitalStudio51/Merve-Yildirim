@@ -1,11 +1,11 @@
 # Merve Yıldırım Beauty V6 SEO Domain Ready
 
-Önerilen ana domain: `merveyildirimbeauty.com.tr`
+Önerilen ana domain: `merveyildirimguzellik.com.tr`
 
 Bu sürümde görünür tasarım değiştirilmeden SEO ve domain hazırlığı yapıldı.
 
 ## Yapılan SEO düzenlemeleri
-- Canonical URL'ler `https://merveyildirimbeauty.com.tr` olarak ayarlandı.
+- Canonical URL'ler `https://merveyildirimguzellik.com.tr` olarak ayarlandı.
 - `robots.txt` ve `sitemap.xml` gerçek domainle güncellendi.
 - Ana sayfa, randevu, hizmetler, KVKK ve hizmet koşulları için özel title/description eklendi.
 - Open Graph ve Twitter Card meta etiketleri eklendi.
@@ -18,7 +18,7 @@ Bu sürümde görünür tasarım değiştirilmeden SEO ve domain hazırlığı y
 
 ## Yayın sonrası yapılacaklar
 1. Domain alınırsa DNS/hosting bağlantısı yapılmalı.
-2. Search Console'a `https://merveyildirimbeauty.com.tr/sitemap.xml` gönderilmeli.
+2. Search Console'a `https://merveyildirimguzellik.com.tr/sitemap.xml` gönderilmeli.
 3. Ana sayfa ve hizmet sayfaları URL denetimiyle dizine ekletilmeli.
 4. Google Business Profile'da aynı telefon, adres ve domain kullanılmalı.
 5. Instagram/Facebook profillerine aynı domain eklenmeli.

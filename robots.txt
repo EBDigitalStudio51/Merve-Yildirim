@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin-yorumlar.html
 
-Sitemap: https://merveyildirimbeauty.com.tr/sitemap.xml
+Sitemap: https://merveyildirimguzellik.com.tr/sitemap.xml
